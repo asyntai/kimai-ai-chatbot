@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="flashmessages.en.xlf">
+    <body>
+      <trans-unit id="asyntai.reset_done"><source>asyntai.reset_done</source><target>The Asyntai connection is removed.</target></trans-unit>
+      <trans-unit id="asyntai.connect_invalid"><source>asyntai.connect_invalid</source><target>The connection data is not valid. Please try again.</target></trans-unit>
+      <trans-unit id="asyntai.connect_done"><source>asyntai.connect_done</source><target>Asyntai is connected. The chat assistant is now live.</target></trans-unit>
+      <trans-unit id="asyntai.display_saved"><source>asyntai.display_saved</source><target>Settings saved successfully.</target></trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+{% set auth_url = origin ~ '/wp-auth?platform=kimai' %}
+<div id="asyntai-settings" data-auth-url="{{ auth_url }}" data-status-url="{{ origin }}/connect-status.js">
+    <div class="card mb-3">
+        <div class="card-body">
+            <p>
+                {{ 'asyntai.status'|trans }}:
+                {% if site_id %}
+                    <strong id="asyntai-status" class="text-success">{{ 'asyntai.connected'|trans }}</strong>
+                    {% if account_email %}<span class="text-secondary">{{ 'asyntai.connected_as'|trans({'%email%': account_email}) }}</span>{% endif %}
+                {% else %}
+                    <strong id="asyntai-status">{{ 'asyntai.not_connected'|trans }}</strong>
+                {% endif %}
+            </p>
+            <div id="asyntai-alert" class="alert" style="display:none;"></div>
+
+            {% if site_id %}
+                <h3>{{ 'asyntai.enabled_title'|trans }}</h3>
+                <p>{{ 'asyntai.enabled_text'|trans }}</p>
+                <p><a class="btn btn-primary" href="{{ origin }}/dashboard" target="_blank" rel="noopener">{{ 'asyntai.open_panel'|trans }}</a></p>
+                <form method="post" action="{{ path('asyntai_chatbot_reset') }}" autocomplete="off" onsubmit="return window.confirm(this.getAttribute('data-confirm'));" data-confirm="{{ 'asyntai.reset_confirm'|trans }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token(csrf_id) }}">
+                    <button type="submit" class="btn btn-danger">{{ 'asyntai.reset'|trans }}</button>
+                </form>
+            {% else %}
+                <h3>{{ 'asyntai.connect_title'|trans }}</h3>
+                <p>{{ 'asyntai.connect_text'|trans }}</p>
+                <p><button type="button" id="asyntai-connect-btn" class="btn btn-primary">{{ 'asyntai.get_started'|trans }}</button></p>
+                <p class="text-secondary">
+                    {{ 'asyntai.no_window'|trans }}
+                    <a id="asyntai-fallback-link" href="{{ auth_url }}" target="_blank" rel="noopener">{{ 'asyntai.open_connect_page'|trans }}</a>
+                </p>
+                <form id="asyntai-connect-form" method="post" action="{{ path('asyntai_chatbot_connect') }}" autocomplete="off" style="display:none;">
+                    <input type="hidden" name="_token" value="{{ csrf_token(csrf_id) }}">
+                    <input type="hidden" name="site_id" value="">
+                    <input type="hidden" name="script_url" value="">
+                    <input type="hidden" name="account_email" value="">
+                </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h3>{{ 'asyntai.where_title'|trans }}</h3>
+            <form method="post" action="{{ path('asyntai_chatbot_display') }}" autocomplete="off">
+                <input type="hidden" name="_token" value="{{ csrf_token(csrf_id) }}">
+                <label class="form-check">
+                    <input class="form-check-input" type="checkbox" name="show_users" value="1"{% if show_users %} checked{% endif %}>
+                    <span class="form-check-label">{{ 'asyntai.show_users'|trans }}</span>
+                </label>
+                <label class="form-check">
+                    <input class="form-check-input" type="checkbox" name="show_login" value="1"{% if show_login %} checked{% endif %}>
+                    <span class="form-check-label">{{ 'asyntai.show_login'|trans }}</span>
+                </label>
+                <button type="submit" class="btn btn-primary mt-2">{{ 'action.save'|trans }}</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var root = document.getElementById('asyntai-settings');
+  var btn = document.getElementById('asyntai-connect-btn');
+  if (!root || !btn) { return; }
+  var AUTH_URL = root.getAttribute('data-auth-url');
+  var STATUS_URL = root.getAttribute('data-status-url');
+  var SAVING = {{ 'asyntai.saving'|trans|json_encode|raw }};
+  var BLOCKED = {{ 'asyntai.popup_blocked'|trans|json_encode|raw }};
+  var bytes = new Uint8Array(16);
+  window.crypto.getRandomValues(bytes);
+  var state = 'kimai_' + Array.prototype.map.call(bytes, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+  var connectUrl = AUTH_URL + '&state=' + encodeURIComponent(state);
+
+  function showAlert(message, ok) {
+    var el = document.getElementById('asyntai-alert');
+    el.className = 'alert ' + (ok ? 'alert-success' : 'alert-danger');
+    el.style.display = 'block';
+    el.textContent = message;
+  }
+
+  function save(data) {
+    var form = document.getElementById('asyntai-connect-form');
+    showAlert(SAVING, true);
+    form.elements.site_id.value = data.site_id || '';
+    form.elements.script_url.value = data.script_url || '';
+    form.elements.account_email.value = data.account_email || '';
+    form.submit();
+  }
+
+  var polling = false;
+  function poll() {
+    if (polling) { return; }
+    polling = true;
+    var attempts = 0;
+    function check() {
+      if (attempts++ > 180) { polling = false; return; }
+      var cb = 'asyntai_cb_' + Date.now();
+      var script = document.createElement('script');
+      window[cb] = function (data) {
+        delete window[cb];
+        script.remove();
+        if (data && data.site_id) {
+          polling = false;
+          save(data);
+          return;
+        }
+        setTimeout(check, 1000);
+      };
+      script.onerror = function () {
+        script.remove();
+        setTimeout(check, 2000);
+      };
+      script.src = STATUS_URL + '?state=' + encodeURIComponent(state) + '&cb=' + cb;
+      document.head.appendChild(script);
+    }
+    setTimeout(check, 800);
+  }
+
+  var link = document.getElementById('asyntai-fallback-link');
+  link.href = connectUrl;
+  link.addEventListener('click', poll);
+  btn.addEventListener('click', function () {
+    var w = 800, h = 720;
+    var y = window.top.outerHeight / 2 + window.top.screenY - (h / 2);
+    var x = window.top.outerWidth / 2 + window.top.screenX - (w / 2);
+    var pop = window.open(connectUrl, 'asyntai_connect',
+      'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=' + w + ',height=' + h + ',top=' + y + ',left=' + x);
+    if (!pop || pop.closed) { showAlert(BLOCKED, false); }
+    poll();
+  });
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{
+    "name": "asyntai/kimai-ai-chatbot",
+    "description": "Adds the Asyntai AI chat assistant to Kimai. It answers your users around the clock, in their language.",
+    "homepage": "https://asyntai.com",
+    "type": "kimai-plugin",
+    "version": "1.0.0",
+    "keywords": [
+        "kimai",
+        "kimai-plugin",
+        "ai-chatbot",
+        "chatbot",
+        "asyntai"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Asyntai",
+            "email": "hello@asyntai.com",
+            "homepage": "https://asyntai.com"
+        }
+    ],
+    "support": {
+        "email": "hello@asyntai.com",
+        "docs": "https://asyntai.com/documentation/integrations/kimai/",
+        "source": "https://github.com/asyntai/kimai-ai-chatbot"
+    },
+    "extra": {
+        "kimai": {
+            "require": 24400,
+            "name": "Asyntai AI Chatbot"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "KimaiPlugin\\AsyntaiChatbotBundle\\": ""
+        }
+    }
+}

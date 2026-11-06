@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="en" datatype="plaintext" original="messages.en.xlf">
+    <body>
+      <trans-unit id="asyntai.title"><source>asyntai.title</source><target>Asyntai AI Chatbot</target></trans-unit>
+      <trans-unit id="asyntai.status"><source>asyntai.status</source><target>Status</target></trans-unit>
+      <trans-unit id="asyntai.connected"><source>asyntai.connected</source><target>Connected</target></trans-unit>
+      <trans-unit id="asyntai.connected_as"><source>asyntai.connected_as</source><target>as %email%</target></trans-unit>
+      <trans-unit id="asyntai.not_connected"><source>asyntai.not_connected</source><target>Not connected</target></trans-unit>
+      <trans-unit id="asyntai.enabled_title"><source>asyntai.enabled_title</source><target>Asyntai is now enabled</target></trans-unit>
+      <trans-unit id="asyntai.enabled_text"><source>asyntai.enabled_text</source><target>The AI chat assistant answers your users on the Kimai pages you choose below. Set up how it answers, read the chats and more in the Asyntai panel.</target></trans-unit>
+      <trans-unit id="asyntai.open_panel"><source>asyntai.open_panel</source><target>Open the Asyntai panel</target></trans-unit>
+      <trans-unit id="asyntai.reset"><source>asyntai.reset</source><target>Reset connection</target></trans-unit>
+      <trans-unit id="asyntai.reset_confirm"><source>asyntai.reset_confirm</source><target>Remove the Asyntai connection?</target></trans-unit>
+      <trans-unit id="asyntai.connect_title"><source>asyntai.connect_title</source><target>Connect your Asyntai account</target></trans-unit>
+      <trans-unit id="asyntai.connect_text"><source>asyntai.connect_text</source><target>Press the button. A window opens where you sign in to Asyntai, or create a free account. When it closes, the chat assistant is live.</target></trans-unit>
+      <trans-unit id="asyntai.get_started"><source>asyntai.get_started</source><target>Get started</target></trans-unit>
+      <trans-unit id="asyntai.no_window"><source>asyntai.no_window</source><target>If no window opens:</target></trans-unit>
+      <trans-unit id="asyntai.open_connect_page"><source>asyntai.open_connect_page</source><target>open the connect page</target></trans-unit>
+      <trans-unit id="asyntai.saving"><source>asyntai.saving</source><target>Asyntai is connected. Saving...</target></trans-unit>
+      <trans-unit id="asyntai.popup_blocked"><source>asyntai.popup_blocked</source><target>The browser blocked the window. Allow pop-ups or use the link below.</target></trans-unit>
+      <trans-unit id="asyntai.where_title"><source>asyntai.where_title</source><target>Where the chat shows</target></trans-unit>
+      <trans-unit id="asyntai.show_users"><source>asyntai.show_users</source><target>For signed-in users, on every page</target></trans-unit>
+      <trans-unit id="asyntai.show_login"><source>asyntai.show_login</source><target>For visitors of the login page</target></trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,14 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    KimaiPlugin\AsyntaiChatbotBundle\:
+        resource: '../../*'
+        exclude:
+            - '../../Resources/'
+
+    KimaiPlugin\AsyntaiChatbotBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']
